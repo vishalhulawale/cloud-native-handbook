@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-gui
+  namespace: admin-app
+spec:
+  type: ClusterIP
+  selector:
+    app: admin-gui
+  ports:
+  - port: 80        # Service port
+    targetPort: 10000 # [CHANGED] Target Envoy instead of the app directly

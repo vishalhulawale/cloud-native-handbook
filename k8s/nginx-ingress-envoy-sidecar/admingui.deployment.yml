@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-gui
+  namespace: admin-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: admin-gui
+  template:
+    metadata:
+      labels:
+        app: admin-gui
+    spec:
+      containers:
+          # Your existing application container
+          - name: admin-gui
+            image: admin-gui:latest
+            imagePullPolicy: IfNotPresent
+            ports:
+              - containerPort: 80
+            
+          # [NEW] The Envoy Sidecar Container
+          - name: envoy
+            image: envoyproxy/envoy:v1.25-latest # Or your preferred version
+            ports:
+              - containerPort: 10000 # The port Envoy listens on
+              - containerPort: 9901  # Admin interface
+            volumeMounts:
+              - name: envoy-config-vol
+                mountPath: /etc/envoy
+
+      # [NEW] Volume definition for the ConfigMap
+      volumes:
+        - name: envoy-config-vol
+          configMap:
+            name: envoy-config
