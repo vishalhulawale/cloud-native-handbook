@@ -1,0 +1,26 @@
+services:
+  admin-gui:
+    build:
+      context: ./admin-gui
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - userservice
+    networks:
+      - app-network
+
+  userservice:
+    build:
+      context: ./userservice
+      dockerfile: Dockerfile
+    ports:
+      # Expose 8080 to host so the browser can access the API directly
+      # (since the React app makes client-side requests)
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
