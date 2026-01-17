@@ -1,25 +1,43 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
 metadata:
-  name: admin-app-ingress
+  name: admin-app-gateway
   namespace: admin-app
 spec:
-  ingressClassName: nginx
-  rules:
-    - host: adminapp.localhost
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: admin-gui
-                port:
-                  number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: userservice
-                port:
-                  number: 8080
+  selector:
+    istio: ingressgateway # use Istio's default ingress gateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "adminapp.localhost"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: admin-gui-vs
+  namespace: admin-app
+spec:
+  hosts:
+  - "adminapp.localhost"
+  gateways:
+  - admin-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/api"
+    route:
+    - destination:
+        host: userservice
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: admin-gui
+        port:
+          number: 80

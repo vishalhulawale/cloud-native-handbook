@@ -18,4 +18,4 @@ spec:
           image: userservice:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 80
+            - containerPort: 8080
