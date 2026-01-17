@@ -3,6 +3,7 @@ services:
     build:
       context: ./admin-gui
       dockerfile: Dockerfile
+    image: admin-gui
     ports:
       - "80:80"
     depends_on:
@@ -14,6 +15,7 @@ services:
     build:
       context: ./userservice
       dockerfile: Dockerfile
+    image: userservice
     ports:
       # Expose 8080 to host so the browser can access the API directly
       # (since the React app makes client-side requests)

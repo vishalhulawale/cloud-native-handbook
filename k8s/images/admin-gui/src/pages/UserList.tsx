@@ -8,7 +8,7 @@ function UserList() {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/v1/users")
+        axios.get("/api/v1/users")
             .then(response => {
                 setUsers(response.data);
             })
