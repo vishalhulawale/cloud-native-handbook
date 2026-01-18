@@ -153,3 +153,12 @@ configmap "envoy-config-userservice" deleted
 hulaw@vishal MINGW64 /c/Workspace/cloud-native-handbook (main)
 $ kubectl delete namespace ingress-nginx 2>&1
 namespace "ingress-nginx" deleted
+
+# Install the chart
+helm install admin-app ./k8s/helm-chart
+
+# Dry run to see generated manifests
+helm template admin-app ./k8s/helm-chart
+
+# Upgrade existing release
+helm upgrade admin-app ./k8s/helm-chart

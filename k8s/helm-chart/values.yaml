@@ -1,0 +1,80 @@
+# Default values for admin-app
+
+namespace:
+  name: admin-app
+  labels:
+    istio-injection: enabled
+
+# Admin GUI configuration
+adminGui:
+  name: admin-gui
+  replicaCount: 2
+  image:
+    repository: admin-gui
+    tag: latest
+    pullPolicy: IfNotPresent
+  containerPort: 80
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+# User Service configuration
+userservice:
+  name: userservice
+  replicaCount: 2
+  image:
+    repository: userservice
+    tag: latest
+    pullPolicy: IfNotPresent
+  containerPort: 8080
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+# Istio Gateway configuration
+gateway:
+  name: admin-app-gateway
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "adminapp.localhost"
+
+# Istio VirtualService configuration
+virtualService:
+  name: admin-gui-vs
+  hosts:
+    - "adminapp.localhost"
+  http:
+    - match:
+        - uri:
+            prefix: "/api"
+      destination:
+        host: userservice
+        port: 8080
+    - match:
+        - uri:
+            prefix: "/"
+      destination:
+        host: admin-gui
+        port: 80

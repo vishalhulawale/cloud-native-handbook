@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.virtualService.name }}
+  namespace: {{ include "admin-app.namespace" . }}
+  labels:
+    {{- include "admin-app.labels" . | nindent 4 }}
+spec:
+  hosts:
+    {{- range .Values.virtualService.hosts }}
+    - {{ . | quote }}
+    {{- end }}
+  gateways:
+    - {{ include "admin-app.namespace" . }}/{{ .Values.gateway.name }}
+  http:
+    {{- range .Values.virtualService.http }}
+    - match:
+        {{- range .match }}
+        - uri:
+            prefix: {{ .uri.prefix | quote }}
+        {{- end }}
+      route:
+        - destination:
+            host: {{ .destination.host }}
+            port:
+              number: {{ .destination.port }}
+    {{- end }}

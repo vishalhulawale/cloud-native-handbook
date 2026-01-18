@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.adminGui.name }}
+  namespace: {{ include "admin-app.namespace" . }}
+  labels:
+    {{- include "admin-app.labels" . | nindent 4 }}
+    app: {{ .Values.adminGui.name }}
+spec:
+  replicas: {{ .Values.adminGui.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.adminGui.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.adminGui.name }}
+    spec:
+      containers:
+        - name: {{ .Values.adminGui.name }}
+          image: "{{ .Values.adminGui.image.repository }}:{{ .Values.adminGui.image.tag }}"
+          imagePullPolicy: {{ .Values.adminGui.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.adminGui.containerPort }}
+          {{- if .Values.adminGui.resources }}
+          resources:
+            {{- toYaml .Values.adminGui.resources | nindent 12 }}
+          {{- end }}

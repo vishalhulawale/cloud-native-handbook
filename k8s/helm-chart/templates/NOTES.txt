@@ -1,0 +1,28 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+The application has been deployed with Istio ingress gateway.
+
+To access the application:
+{{- range .Values.virtualService.hosts }}
+  - http://{{ . }}
+{{- end }}
+
+Make sure the Istio ingress gateway is properly configured and the host is resolvable.
+
+Components deployed:
+  - Namespace: {{ .Values.namespace.name }} (with Istio sidecar injection enabled)
+  - Admin GUI: {{ .Values.adminGui.replicaCount }} replica(s)
+  - User Service: {{ .Values.userservice.replicaCount }} replica(s)
+  - Istio Gateway: {{ .Values.gateway.name }}
+  - Istio VirtualService: {{ .Values.virtualService.name }}
+
+Routes:
+  - /api/* -> userservice:{{ .Values.userservice.service.port }}
+  - /* -> admin-gui:{{ .Values.adminGui.service.port }}

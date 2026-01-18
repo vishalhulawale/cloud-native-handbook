@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.userservice.name }}
+  namespace: {{ include "admin-app.namespace" . }}
+  labels:
+    {{- include "admin-app.labels" . | nindent 4 }}
+    app: {{ .Values.userservice.name }}
+spec:
+  replicas: {{ .Values.userservice.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.userservice.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.userservice.name }}
+    spec:
+      containers:
+        - name: {{ .Values.userservice.name }}
+          image: "{{ .Values.userservice.image.repository }}:{{ .Values.userservice.image.tag }}"
+          imagePullPolicy: {{ .Values.userservice.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.userservice.containerPort }}
+          {{- if .Values.userservice.resources }}
+          resources:
+            {{- toYaml .Values.userservice.resources | nindent 12 }}
+          {{- end }}

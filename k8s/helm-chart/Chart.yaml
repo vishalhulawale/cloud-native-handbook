@@ -1,0 +1,12 @@
+apiVersion: v2
+name: admin-app
+description: A Helm chart for Admin App with Istio Ingress and Sidecar
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - admin
+  - istio
+  - microservices
+maintainers:
+  - name: Cloud Native Team

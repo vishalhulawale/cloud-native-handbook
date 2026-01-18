@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.adminGui.name }}
+  namespace: {{ include "admin-app.namespace" . }}
+  labels:
+    {{- include "admin-app.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.adminGui.service.type }}
+  selector:
+    app: {{ .Values.adminGui.name }}
+  ports:
+    - name: http
+      port: {{ .Values.adminGui.service.port }}
+      targetPort: {{ .Values.adminGui.service.targetPort }}
