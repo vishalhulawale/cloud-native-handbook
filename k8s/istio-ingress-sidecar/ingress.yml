@@ -23,7 +23,7 @@ spec:
   hosts:
   - "adminapp.localhost"
   gateways:
-  - admin-app-gateway
+  - admin-app/admin-app-gateway
   http:
   - match:
     - uri:

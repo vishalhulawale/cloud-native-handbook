@@ -149,3 +149,7 @@ $ kubectl delete -f k8s/images/deployment/envoy-configmap.yml --ignore-not-found
 kubectl delete -f k8s/images/deployment/envoy-configmap-userservice.yml --ignore-not-found
 configmap "envoy-config" deleted
 configmap "envoy-config-userservice" deleted
+
+hulaw@vishal MINGW64 /c/Workspace/cloud-native-handbook (main)
+$ kubectl delete namespace ingress-nginx 2>&1
+namespace "ingress-nginx" deleted
