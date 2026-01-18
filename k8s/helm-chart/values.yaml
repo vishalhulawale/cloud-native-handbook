@@ -25,6 +25,12 @@ adminGui:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 
 # User Service configuration
 userservice:
@@ -46,6 +52,12 @@ userservice:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 
 # Istio Gateway configuration
 gateway:

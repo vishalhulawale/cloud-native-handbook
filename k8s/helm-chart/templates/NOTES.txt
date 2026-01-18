@@ -22,6 +22,12 @@ Components deployed:
   - User Service: {{ .Values.userservice.replicaCount }} replica(s)
   - Istio Gateway: {{ .Values.gateway.name }}
   - Istio VirtualService: {{ .Values.virtualService.name }}
+{{- if .Values.adminGui.autoscaling.enabled }}
+  - Admin GUI HPA: min={{ .Values.adminGui.autoscaling.minReplicas }}, max={{ .Values.adminGui.autoscaling.maxReplicas }}
+{{- end }}
+{{- if .Values.userservice.autoscaling.enabled }}
+  - User Service HPA: min={{ .Values.userservice.autoscaling.minReplicas }}, max={{ .Values.userservice.autoscaling.maxReplicas }}
+{{- end }}
 
 Routes:
   - /api/* -> userservice:{{ .Values.userservice.service.port }}
